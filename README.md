@@ -3,8 +3,6 @@
 **ProcureFlow** is a Django-based procurement management system that automates organizational purchasing workflows.  
 It supports multiple companies and departments, role-based access, ticketed requisitions, HOD approvals, RFQ issuance by procurement, and a vendor quotation portal.
 
-> Short description: **ProcureFlow – A Django-based procurement management system with multi-role workflows, approvals, and vendor RFQs.**
-
 ---
 
 ## Table of contents
