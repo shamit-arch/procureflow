@@ -1,0 +1,93 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About | Procure Flow</title>
+  <link rel="icon" href="{% static 'IMG/favicon.png' %}">
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="font-sans text-gray-800 h-full flex flex-col">
+
+  <!-- Navbar -->
+    <header class="bg-white shadow-sm p-4">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+        <h1 class="text-xl font-bold text-blue-600"><a href="/">Procure Flow</a></h1>
+        <nav class="hidden md:flex space-x-8 text-gray-600">
+            <a href="/" class="hover:text-blue-600">Home</a>
+            <a href="#" class="hover:text-blue-600">About Us</a>
+        </nav>
+        <a href="/register" class="ml-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+            Get Started
+        </a>
+        </div>
+    </header>
+
+  <!-- About Section -->
+   <main class="flex-1">
+       
+       <section class="max-w-5xl mx-auto px-6 py-20 text-center">
+           <h2 class="text-4xl font-bold text-gray-900 mb-6">About Procure Flow</h2>
+           <p class="text-gray-600 max-w-3xl mx-auto">
+               At Procure Flow, we are on a mission to revolutionize the way organizations manage their
+               procurement operations. Our cloud-based platform offers powerful, intuitive tools that
+               simplify purchase requests, approvals, vendor tracking, and order fulfillment—all in one place.
+            </p>
+        </section>
+        
+        <!-- Features Grid (2x2 layout) -->
+        <section class="max-w-6xl mx-auto px-6 pb-20">
+            <div class="grid gap-8 md:grid-cols-2">
+                
+                <div class="p-6 bg-white shadow rounded-lg hover:shadow-lg transition">
+                    <h4 class="font-semibold text-blue-600 mb-2 text-xl">Built for Teams</h4>
+                    <p class="text-gray-600 text-sm">
+                        Designed with collaboration in mind, enabling procurement, finance, and operations teams to work together seamlessly.
+                    </p>
+                </div>
+                
+                <div class="p-6 bg-white shadow rounded-lg hover:shadow-lg transition">
+                    <h4 class="font-semibold text-blue-600 mb-2 text-xl">Smart Automation</h4>
+                    <p class="text-gray-600 text-sm">
+                        Say goodbye to manual approvals. Our workflow engine automates tasks and speeds up the decision-making process.
+                    </p>
+                </div>
+                
+                <div class="p-6 bg-white shadow rounded-lg hover:shadow-lg transition">
+                    <h4 class="font-semibold text-blue-600 mb-2 text-xl">Insightful Reporting</h4>
+                    <p class="text-gray-600 text-sm">
+                        Get real-time data on spending, vendor performance, and order status to make strategic business decisions.
+                    </p>
+                </div>
+                
+                <div class="p-6 bg-white shadow rounded-lg hover:shadow-lg transition">
+                    <h4 class="font-semibold text-blue-600 mb-2 text-xl">Secure & Scalable</h4>
+                    <p class="text-gray-600 text-sm">
+                        Hosted on the web with enterprise-grade security and built to scale with your organization's growing needs.
+                    </p>
+                </div>
+                
+            </div>
+        </section>
+        
+    </main>
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-gray-300 py-12">
+        <div class="container mx-auto px-6 flex flex-col md:flex-row justify-between">
+            <div>
+                <h4 class="text-white font-bold mb-2">Procure Flow</h4>
+                <p class="text-sm">Empowering businesses with smart procurement solutions.</p>
+            </div>
+            <div>
+                <h4 class="text-white-600 font-bold mb-2">Company</h4>
+                <a href="/about" class="block text-sm hover:text-white">About Us</a>
+            </div>
+        </div>
+        <div class="text-center text-gray-500 text-sm mt-8">
+            &copy; 2025 Procure Flow. All rights reserved.
+        </div>
+    </footer>
+
+</body>
+</html>

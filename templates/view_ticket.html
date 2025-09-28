@@ -1,0 +1,114 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ticket Details | Procure Flow</title>
+    <link rel="icon" href="{% static 'IMG/favicon.png' %}">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-50 font-sans">
+    <div class="flex h-screen bg-white">
+        <aside class="w-64 flex flex-col bg-slate-800 text-white">
+            <div class="px-6 py-4 border-b border-slate-700">
+                <h1 class="text-2xl font-bold">Procure Flow</h1>
+            </div>
+            <nav class="flex-1 mt-6">
+                <a href="/dashboard" class="flex items-center px-6 py-3 text-gray-300 hover:bg-slate-700">
+                    <i class="fas fa-tachometer-alt w-6"></i><span class="ml-3">Dashboard</span>
+                </a>
+                <a href="/tickets" class="flex items-center px-6 py-3 text-white bg-slate-700">
+                    <i class="fas fa-ticket-alt w-6"></i><span class="ml-3">All Tickets</span>
+                </a>
+                {% if log %}
+                <a href="/logs" class="flex items-center px-6 py-3 text-gray-300 hover:bg-slate-700">
+                    <i class="fas fa-history w-6"></i><span class="ml-3">Logs</span>
+                </a>
+                {% endif %}
+            </nav>
+            <div class="p-4 border-t border-slate-700">
+                 <a href="/setting" class="flex items-center px-4 py-3 text-gray-300 hover:bg-slate-700">
+                    <i class="fas fa-cog w-6"></i><span class="ml-3">Settings</span>
+                </a>
+                <a href="/logout" class="flex items-center px-4 py-3 text-white bg-red-500 rounded-lg hover:bg-red-600">
+                    <i class="fas fa-sign-out-alt w-6"></i><span class="ml-3">Logout</span>
+                </a>
+            </div>
+        </aside>
+
+        <main class="flex-1 p-8 overflow-y-auto">
+            <div class="flex justify-end mb-4">
+                <div class="text-gray-600">{{ user.name }}</div>
+            </div>
+
+            <button onclick="history.back()" class="bg-slate-700 text-white px-4 py-2 rounded-md hover:bg-slate-600 mb-6">&larr; Back</button>
+
+            <div class="bg-white p-8 rounded-lg shadow">
+                <h2 class="text-2xl font-bold text-gray-800 mb-6">Ticket Details</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
+                    <div><label class="text-sm text-gray-500">Ticket ID</label><div class="p-2 bg-gray-100 rounded mt-1">{{ ticket.ticket_id }}</div></div>
+                    <div><label class="text-sm text-gray-500">Title</label><div class="p-2 bg-gray-100 rounded mt-1">{{ ticket.title }}</div></div>
+                    <div><label class="text-sm text-gray-500">Status</label><div class="p-2 bg-gray-100 rounded mt-1">{{ ticket.status }}</div></div>
+                    <div><label class="text-sm text-gray-500">Category</label><div class="p-2 bg-gray-100 rounded mt-1">{{ ticket.category }}</div></div>
+                    <div><label class="text-sm text-gray-500">Requestor</label><div class="p-2 bg-gray-100 rounded mt-1">{{ ticket.requestor }}</div></div>
+                    <div><label class="text-sm text-gray-500">Created at</label><div class="p-2 bg-gray-100 rounded mt-1">{{ ticket.created_at }}</div></div>
+                    <div><label class="text-sm text-gray-500">Department</label><div class="p-2 bg-gray-100 rounded mt-1">{{ ticket.department }}</div></div>
+                    <div><label class="text-sm text-gray-500">Required by</label><div class="p-2 bg-gray-100 rounded mt-1">{{ ticket.required_by }}</div></div>
+                    <div class="md:col-span-2"><label class="text-sm text-gray-500">Description</label><div class="p-2 bg-gray-100 rounded mt-1 min-h-[60px]">{{ ticket.description }}</div></div>
+                    <div class="md:col-span-2"><label class="text-sm text-gray-500">Justification</label><div class="p-2 bg-gray-100 rounded mt-1 min-h-[60px]">{{ ticket.justification }}</div></div>
+                    <div class="md:col-span-2"><label class="text-sm text-gray-500">Total Estimated Cost</label><div class="p-2 bg-gray-100 rounded mt-1">{{ ticket.total_estimated_cost }}</div></div>
+                </div>
+
+                <div class="mt-10">
+                    <h3 class="text-xl font-bold text-gray-800 mb-4">Ticket Items</h3>
+                    <table class="w-full text-left">
+                        <thead class="bg-gray-50 border-b"><tr><th class="p-3 font-semibold text-gray-600">ID</th><th class="p-3 font-semibold text-gray-600">Name</th><th class="p-3 font-semibold text-gray-600">Budget</th><th class="p-3 font-semibold text-gray-600">Quantity</th><th class="p-3 font-semibold text-gray-600">Unit</th></tr></thead>
+                        <tbody>
+                            {% if items %}
+                            {% for item in items %}
+                            <tr>
+                                <td><input type="text" class="form-control" value="{{ forloop.counter }}" disabled></td>
+                                <td><input type="text" name="items[0][name]" value="{{ item.name }}" readonly></td>
+                                <td><input type="text" name="items[0][budget]" value="{{ item.budget }}" readonly></td>
+                                <td><input type="text" name="items[0][quantity]" value="{{ item.quantity }}"readonly></td>
+                                <td><input type="text" name="items[0][unit]" value="{{ item.unit }}" readonly></td>
+                                
+                            </tr>
+                            {% endfor %}
+                            {% else %}
+                            <tr><td colspan="5" class="text-center p-6 text-gray-500">No items were listed</td></tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="mt-10">
+                    <h3 class="text-xl font-bold text-gray-800 mb-4">Ticket Services</h3>
+                    <table class="w-full text-left">
+                        <thead class="bg-gray-50 border-b"><tr><th class="p-3 font-semibold text-gray-600">ID</th><th class="p-3 font-semibold text-gray-600">Name</th><th class="p-3 font-semibold text-gray-600">Cost</th><th class="p-3 font-semibold text-gray-600">Duration</th><th class="p-3 font-semibold text-gray-600">Timeunit</th></tr></thead>
+                        <tbody>
+                            {% if services %}
+                            {% for service in services %}
+                            <tr>
+                                <td><input type="text" class="form-control" value="{{ forloop.counter }}" disabled></td>
+                                <td><input type="text" name="services[0][name]" value="{{ service.name }}" readonly></td>
+                                <td><input type="number" step="0.01" name="services[0][cost]" value="{{ service.cost }}" readonly></td>
+                                <td><input type="number" name="services[0][duration]" value="{{ service.duration }}"readonly></td>
+                                <td><input type="text" name="services[0][unit]" value="{{ service.timeunit }}" readonly></td>
+                                
+                            </tr>
+                            {% endfor %}
+                            {% else %}
+                            <tr><td colspan="5" class="text-center p-6 text-gray-500">No services were listed</td></tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

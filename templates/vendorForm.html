@@ -1,0 +1,142 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quotation Form | Procure Flow</title>
+    <link rel="icon" href="{% static "IMG/favicon.png" %}"/>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" xintegrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body class="">
+    <header class="flex-1 bg-white shadow-sm p-4">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-center">
+      <h1 class="text-2xl font-bold text-blue-600">Procure Flow</h1>
+    </div>
+  </header>
+
+    <main class="flex-1 p-8 overflow-y-auto">
+
+        <div class="flex-1 p-8 overflow--auto">
+            <div class="bg-white p-8 rounded-lg shadow-md">
+                <h1 class="text-xl font-semibold mb-6">Quotation Form</h1>
+
+                <form method="post" action="/addquote">
+                    <input class="hidden" name="vendor" value="{{ vendor.id }}">
+                    {% csrf_token %}
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="ticketid" class="block text-sm font-medium text-gray-700">Ticket ID</label>
+                        <input name="ticketid" id="ticketid" type="text" value="{{ ticket.ticket_id }}" readonly class="p-4 mt-1 block w-full bg-gray-100 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" readony>
+                    </div>
+                    <div class="relative">
+                        <label for="required_by" class="block text-sm font-medium text-gray-700">Required By</label>
+                        <input type="text" name="required_by" id="required_by" placeholder="mm / dd / yyyy" class="p-4 mt-1 block w-full bg-gray-100 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" readonly value="{{ ticket.required_by }}">
+                    </div>
+                </div>
+                
+                <div class="mt-8">
+                    <h2 class="text-lg font-semibold mb-4">Items</h2>
+                    <div id="items-container">
+                        {% if items %}
+                        {% for i in items %}
+                        <div class="flex items-center space-x-4 mb-4 item-row">
+                            <input type="hidden" name="items[{{ forloop.counter0 }}][id]" value="{{ i.id }}">
+                            <input type="text" class="w-4 font-semibold" value="{{ forloop.counter }}" disabled>
+                            
+                            <input type="text" name="items[{{ forloop.counter0 }}][name]" readonly class="bg-gray-100 p-4 w-full border-gray-300 rounded-md shadow-sm sm:text-sm" value="{{ i.name }}" >
+                            <input type="text" name="items[{{ forloop.counter0 }}][budget]" readonly value="{{ i.budget }}" class="hidden" >
+                            <input type="number" name="items[{{ forloop.counter0 }}][quantity]" readonly value="{{ i.quantity }}" class="bg-gray-100 p-4 w-full border-gray-300 rounded-md shadow-sm sm:text-sm quantity" >
+                            <input type="text" name="items[{{ forloop.counter0 }}][unit]" readonly value="{{ i.unit }}" class="bg-gray-100 p-4 w-full border-gray-300 rounded-md shadow-sm sm:text-sm">
+                            <input type="number" placeholder="quote per {{ i.unit }}" name="items[{{ forloop.counter0 }}][quotePrice]" class="border-4 border-blue-300 p-4 w-full rounded-md shadow-sm sm:text-sm quote-price" required>
+                            <input type="number" placeholder="total" name="items[{{ forloop.counter0 }}][total]" class="bg-gray-100  p-4 w-full border-gray-300 rounded-md shadow-sm sm:text-sm total-price" readonly>
+                            
+                        </div>
+                        {% endfor %}
+                        {% else %}
+                        <div class="text-center flex mb-4 item-row">
+                            No items were listed
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="mt-8">
+                    <h2 class="text-lg font-semibold mb-4">Services</h2>
+                    <div id="services-container">
+                        {% if services %}
+                        {% for i in services %}
+                        <div class="flex items-center space-x-4 mb-4 item-row">
+                            <input type="hidden" name="services[{{ forloop.counter0 }}][id]" value="{{ i.id }}">
+                            <input type="text" class="font-semibold w-4" value="{{ forloop.counter }}" disabled>
+                            
+                            <input type="text" name="services[{{ forloop.counter0 }}][name]" readonly class="bg-gray-100 p-4 w-full border-gray-300 rounded-md shadow-sm sm:text-sm" value="{{ i.name }}" >
+                            <input type="text" name="services[{{ forloop.counter0 }}][cost]" readonly value="{{ i.cost }}" class="hidden" >
+                            <input type="number" name="services[{{ forloop.counter0 }}][duration]" readonly value="{{ i.duration }}" class="bg-gray-100 p-4 w-full border-gray-300 rounded-md shadow-sm sm:text-sm" >
+                            <input type="text" name="services[{{ forloop.counter0 }}][timeunit]" readonly value="{{ i.timeunit }}" class="bg-gray-100 p-4 w-full border-gray-300 rounded-md shadow-sm sm:text-sm">
+                            <input type="number" placeholder="quote per {{ i.timeunit }}" class="p-4 w-full border-4 border-blue-300 rounded-md shadow-sm sm:text-sm quote-price" name="services[{{ forloop.counter0 }}][quotePrice]" required>
+                            <input type="number" placeholder="total" class="bg-gray-100 p-4 w-full border-gray-300 rounded-md shadow-sm sm:text-sm total" name="services[{{ forloop.counter0 }}][total]" readonly>
+                        </div>
+                        {% endfor %}
+                        {% else %}
+                        <div class="text-center flex mb-4 item-row">
+                            No services were listed
+                        </div>
+                        {% endif %}
+                    </div>
+                    
+                </div>
+
+                <div class="flex justify-end mt-8 space-x-4">
+                    <a href="/dashboard"><button onlclick="window.close()" class="px-6 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50">Close</button></a>
+                    <button type="submit" class="px-6 py-2 bg-green-600 text-white rounded-md hover:bg-green-700">Submit Quotation</button>
+                </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Handle items total calculation
+        const itemRows = document.querySelectorAll('.item-row');
+
+        itemRows.forEach(row => {
+            const quantityInput = row.querySelector('.quantity');
+            const quotePriceInput = row.querySelector('.quote-price');
+            const totalPriceInput = row.querySelector('.total-price');
+
+            if (quantityInput && quotePriceInput && totalPriceInput) {
+                quotePriceInput.addEventListener('input', () => {
+                    const quantity = parseFloat(quantityInput.value) || 0;
+                    const quotePrice = parseFloat(quotePriceInput.value) || 0;
+                    const total = quantity * quotePrice;
+                    totalPriceInput.value = total.toFixed(2);
+                });
+            }
+        });
+
+        // Handle services total calculation
+        const serviceRows = document.querySelectorAll('#services-container .item-row');
+
+        serviceRows.forEach(row => {
+            const durationInput = row.querySelector('input[name*="[duration]"]');
+            const quotePriceInput = row.querySelector('input[placeholder^="quote per"]');
+            const totalPriceInput = row.querySelector('input[placeholder="total"]');
+
+            if (durationInput && quotePriceInput && totalPriceInput) {
+                quotePriceInput.addEventListener('input', () => {
+                    const duration = parseFloat(durationInput.value) || 0;
+                    const quotePrice = parseFloat(quotePriceInput.value) || 0;
+                    const total = duration * quotePrice;
+                    totalPriceInput.value = total.toFixed(2);
+                });
+            }
+        });
+    });
+</script>
+
+</body>
+</html>

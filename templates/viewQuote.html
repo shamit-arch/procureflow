@@ -1,0 +1,138 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quotation Details | Procure Flow</title>
+    <link rel="icon" href="{% static 'IMG/favicon.png' %}">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-50 font-sans">
+    <div class="flex h-screen bg-white">
+        <aside class="w-64 flex flex-col bg-slate-800 text-white">
+            <div class="px-6 py-4 border-b border-slate-700">
+                <h1 class="text-2xl font-bold">Procure Flow</h1>
+            </div>
+            <nav class="flex-1 mt-6">
+                <a href="/dashboard" class="flex items-center px-6 py-3 text-gray-300 hover:bg-slate-700">
+                    <i class="fas fa-tachometer-alt w-6"></i><span class="ml-3">Dashboard</span>
+                </a>
+                <a href="/tickets" class="flex items-center px-6 py-3 text-white bg-slate-700">
+                    <i class="fas fa-ticket-alt w-6"></i><span class="ml-3">All Tickets</span>
+                </a>
+                <a href="/logs" class="flex items-center px-6 py-3 text-gray-300 hover:bg-slate-700">
+                    <i class="fas fa-history w-6"></i><span class="ml-3">Logs</span>
+                </a>
+            </nav>
+            <div class="p-4 border-t border-slate-700">
+                 <a href="/setting" class="flex items-center px-4 py-3 text-gray-300 hover:bg-slate-700">
+                    <i class="fas fa-cog w-6"></i><span class="ml-3">Settings</span>
+                </a>
+                <a href="/logout" class="flex items-center px-4 py-3 text-white bg-red-500 rounded-lg hover:bg-red-600">
+                    <i class="fas fa-sign-out-alt w-6"></i><span class="ml-3">Logout</span>
+                </a>
+            </div>
+        </aside>
+
+        <main class="flex-1 p-8 overflow-y-auto">
+            <div class="flex justify-end mb-4">
+                <div class="text-gray-600">{{ user.name }}</div>
+            </div>
+
+            <button onclick="history.back()" class="bg-slate-700 text-white px-4 py-2 rounded-md hover:bg-slate-600 mb-6">&larr; Back</button>
+
+            <div class="bg-white p-8 rounded-lg shadow">
+                <h2 class="text-2xl font-bold text-gray-800 mb-6">Ticket Details</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
+                    <div><label class="text-sm text-gray-500">Ticket ID</label><div class="p-2 bg-gray-100 rounded mt-1">{{ ticket.ticket_id }}</div></div>
+                    <div><label class="text-sm text-gray-500">Title</label><div class="p-2 bg-gray-100 rounded mt-1">{{ ticket.title }}</div></div>
+                    <div><label class="text-sm text-gray-500">Status</label><div class="p-2 bg-gray-100 rounded mt-1">{{ ticket.status }}</div></div>
+                    <div><label class="text-sm text-gray-500">Category</label><div class="p-2 bg-gray-100 rounded mt-1">{{ ticket.category }}</div></div>
+                    <div><label class="text-sm text-gray-500">Requestor</label><div class="p-2 bg-gray-100 rounded mt-1">{{ ticket.requestor }}</div></div>
+                    <div><label class="text-sm text-gray-500">Created at</label><div class="p-2 bg-gray-100 rounded mt-1">{{ ticket.created_at }}</div></div>
+                    <div><label class="text-sm text-gray-500">Department</label><div class="p-2 bg-gray-100 rounded mt-1">{{ ticket.department }}</div></div>
+                    <div><label class="text-sm text-gray-500">Required by</label><div class="p-2 bg-gray-100 rounded mt-1">{{ ticket.required_by }}</div></div>
+                    <div class="md:col-span-2"><label class="text-sm text-gray-500">Description</label><div class="p-2 bg-gray-100 rounded mt-1 min-h-[60px]">{{ ticket.description }}</div></div>
+                    <div class="md:col-span-2"><label class="text-sm text-gray-500">Justification</label><div class="p-2 bg-gray-100 rounded mt-1 min-h-[60px]">{{ ticket.justification }}</div></div>
+                    </div>
+
+                <div class="mt-12">
+    <h2 class="text-2xl font-bold text-gray-800 mb-6">Vendor Quotes</h2>
+
+    {% for vendor, quotes in vendor_data.items %}
+    <div class="mb-10 border rounded-lg shadow p-6 bg-white">
+        <h3 class="text-xl font-semibold text-blue-800 mb-4">Vendor: {{ vendor.name }}</h3>
+
+        <!-- Item Quotes Table -->
+        <h4 class="text-lg font-bold text-gray-700 mb-2">Quoted Items</h4>
+        {% if quotes.item_quotes %}
+        <table class="w-full text-left mb-6">
+            <thead class="bg-gray-100 border-b">
+                <tr>
+                    <th class="p-3">Item</th>
+                    <th class="p-3">Quantity</th>
+                    <th class="p-3">Unit</th>
+                    <th class="p-3">Unit Price</th>
+                    <th class="p-3">Total Price</th>
+                </tr>
+            </thead>
+            <tbody>
+                
+                {% for quote in quotes.item_quotes %}
+                <tr class="border-b">
+                    <td class="p-3">{{ quote.ticket_item.name }}</td>
+                    <td class="p-3">{{ quote.ticket_item.quantity }}</td>
+                    <td class="p-3">{{ quote.ticket_item.unit }}</td>
+                    <td class="p-3">{{ quote.quoted_unit_price }}</td>
+                    <td class="p-3">{{ quote.quoted_total_price }}</td>
+                    
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+        {% else %}
+        <p class="text-gray-500 mb-6">No item quotes submitted.</p>
+        {% endif %}
+
+        <!-- Service Quotes Table -->
+        <h4 class="text-lg font-bold text-gray-700 mb-2">Quoted Services</h4>
+        {% if quotes.service_quotes %}
+        <table class="w-full text-left">
+            <thead class="bg-gray-100 border-b">
+                <tr>
+                    <th class="p-3">Service</th>
+                    <th class="p-3">Duration</th>
+                    <th class="p-3">Time Unit</th>
+                    <th class="p-3">Unit Price</th>
+                    <th class="p-3">Total Price</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for quote in quotes.service_quotes %}
+                <tr class="border-b">
+                    <td class="p-3">{{ quote.ticket_service.name }}</td>
+                    <td class="p-3">{{ quote.ticket_service.duration }}</td>
+                    <td class="p-3">{{ quote.ticket_service.timeunit }}</td>
+                    <td class="p-3">{{ quote.quoted_unit_price }}</td>
+                    <td class="p-3">{{ quote.quoted_total_price }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p class="text-gray-500">No service quotes submitted.</p>
+        {% endif %}
+        <h2 class="p-3 text-right text-xl font-semibold">Total estimation = {{ grand_total }}</h2>
+    </div>
+    {% endfor %}
+</div>
+
+            </div>
+        </main>
+    </div>
+</body>
+</html>

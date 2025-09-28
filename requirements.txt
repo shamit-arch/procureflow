@@ -1,0 +1,5 @@
+asarPy==1.0.1
+asgiref==3.9.1
+Django==5.2.5
+django-multiselectfield==1.0.1
+sqlparse==0.5.3

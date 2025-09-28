@@ -1,0 +1,94 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile | Procure Flow</title>
+    <link rel="icon" href="{% static 'IMG/favicon.png' %}">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-gray-50 font-sans">
+    <div class="flex h-screen bg-white">
+        <!-- Sidebar -->
+        <aside class="w-64 flex flex-col bg-slate-800 text-white">
+            <div class="px-6 py-4 border-b border-slate-700">
+                <h1 class="text-2xl font-bold">Procure Flow</h1>
+            </div>
+            <nav class="flex-1 mt-6">
+                <a href="/dashboard" class="flex items-center px-6 py-3 text-gray-300 hover:bg-slate-700">
+                    <i class="fas fa-tachometer-alt w-6"></i><span class="ml-3">Dashboard</span>
+                </a>
+                <a href="/tickets" class="flex items-center px-6 py-3 text-gray-300 hover:bg-slate-700">
+                    <i class="fas fa-ticket-alt w-6"></i><span class="ml-3">All Tickets</span>
+                </a>
+                {% if role != "Employee" %}
+                <a href="/logs" class="flex items-center px-6 py-3 text-gray-300 hover:bg-slate-700">
+                    <i class="fas fa-history w-6"></i><span class="ml-3">Logs</span>
+                </a>
+                {% endif %}
+            </nav>
+            <div class="p-4 border-t border-slate-700">
+                 <a href="/setting" class="flex items-center px-4 py-3 text-white bg-slate-700">
+                    <i class="fas fa-cog w-6"></i><span class="ml-3">Settings</span>
+                </a>
+                <a href="/logout" class="flex items-center px-4 py-3 text-white bg-red-500 rounded-lg hover:bg-red-600">
+                    <i class="fas fa-sign-out-alt w-6"></i><span class="ml-3">Logout</span>
+                </a>
+            </div>
+        </aside>
+
+        <main class="flex-1 p-8 overflow-y-auto">
+            <div class="flex justify-end mb-4">
+                <div class="text-gray-600">{{ user.name }}</div>
+            </div>
+
+            <div class="bg-white p-8 rounded-lg shadow-lg relative">
+                                
+                <h2 class="text-2xl font-bold text-gray-800 mb-6">User Profile</h2>
+                <form method="post" action="setting">
+                    {% csrf_token %}
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
+                        <div>
+                            <label for="fname" class="block text-sm font-medium text-gray-700 mb-1">First Name</label>
+                            <input type="text" name="fname" id="fname" value="{{ firstname }}" class="w-full p-2 bg-gray-50 border border-gray-300 rounded-md" required>
+                        </div>
+                        <div>
+                            <label for="lname" class="block text-sm font-medium text-gray-700 mb-1">Last Name</label>
+                            <input type="text" name="lname" id="lname"  value="{{ lastname }}" class="w-full p-2 bg-gray-50 border border-gray-300 rounded-md" required>
+                        </div>
+                        <div class="md:col-span-2">
+                            <label for="email" class="block text-sm font-medium text-gray-700 mb-1 ">Email</label>
+                            <input name="email" id="email" type="email" value="{{ user.email }}" class="w-full p-2 bg-gray-200 border border-gray-300 rounded-md" disabled>
+                            <input class="hidden" type="text" name="email" id="email" value="{{ user.email }}" readonly>
+                        </div>
+                        <div>
+                            <label for="company_id" class="block text-sm font-medium text-gray-700 mb-1 ">Company</label>
+                            <input type="text" name="company_id" id="company_id" value="{{ user.company }}" class="w-full p-2 bg-gray-200 border border-gray-300 rounded-md" disabled>
+                        </div>
+                        <div>
+                            <label for="department_id" class="block text-sm font-medium text-gray-700 mb-1 ">Department</label>
+                            <input name="department_id" id="department_id" type="text" value="{{ user.department }}" class="w-full p-2 bg-gray-200 border border-gray-300 rounded-md" disabled>
+                        </div>
+                        <div class="md:col-span-2">
+                            <label name="current_password" id="password" class="block text-sm font-medium text-gray-700 mb-1">Current Password</label>
+                            <input type="password" name="current_password" required class="w-full p-2 bg-gray-50 border border-gray-300 rounded-md font-mono tracking-widest" required>
+                        </div>
+                        <div class="md:col-span-2">
+                            <label name="new_password" id="password" class="block text-sm font-medium text-gray-700 mb-1">New Password</label>
+                            <input type="password" name="new_password" class="w-full p-2 bg-gray-50 border border-gray-300 rounded-md font-mono tracking-widest">
+                        </div>
+                    </div>
+                    
+                    <div class="mt-8 flex justify-start gap-3">
+                        <a href="dashboard"><button type="button" class="px-6 py-2 bg-white border border-gray-300 text-gray-700 rounded-md hover:bg-gray-100">Cancel</button></a>
+                        <button type="submit" class="px-6 py-2 bg-slate-800 text-white rounded-md hover:bg-slate-700">Save</button>
+                    </div>
+                </form>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

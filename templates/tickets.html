@@ -1,0 +1,144 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Tickets | Procure Flow</title>
+    <link rel="icon" href="{% static 'IMG/favicon.png' %}">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-50 font-sans">
+    <div class="flex h-screen bg-white">
+        <aside class="w-64 flex flex-col bg-slate-800 text-white">
+            <div class="px-6 py-4 border-b border-slate-700">
+                <h1 class="text-2xl font-bold">Procure Flow</h1>
+            </div>
+            <nav class="flex-1 mt-6">
+                <a href="/dashboard" class="flex items-center px-6 py-3 text-gray-300 hover:bg-slate-700">
+                    <i class="fas fa-tachometer-alt w-6"></i><span class="ml-3">Dashboard</span>
+                </a>
+                <a href="#" class="flex items-center px-6 py-3 text-white bg-slate-700">
+                    <i class="fas fa-ticket-alt w-6"></i><span class="ml-3">All Tickets</span>
+                </a>
+                {% if role != 'Employee' %}
+                <a href="/logs" class="flex items-center px-6 py-3 text-gray-300 hover:bg-slate-700">
+                     <i class="fas fa-history w-6"></i><span class="ml-3">Logs</span>
+                </a>
+                {% endif %}
+            </nav>
+            <div class="p-4 border-t border-slate-700">
+                 <a href="/setting" class="flex items-center px-4 py-3 text-gray-300 hover:bg-slate-700">
+                    <i class="fas fa-cog w-6"></i><span class="ml-3">Settings</span>
+                </a>
+                <a href="/logout" class="flex items-center px-4 py-3 text-white bg-red-500 rounded-lg hover:bg-red-600">
+                    <i class="fas fa-sign-out-alt w-6"></i><span class="ml-3">Logout</span>
+                </a>
+            </div>
+        </aside>
+
+        <main class="flex-1 p-8 overflow-y-auto">
+            <div class="flex justify-end mb-8">
+                <div class="text-gray-600">{{ user.name }}</div>
+            </div>
+
+            <div class="bg-white p-6 rounded-lg shadow">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-xl font-bold text-gray-800">All Tickets</h2>
+                    <div class="flex items-center gap-4">
+                        {% if role == "Employee" %}
+                        <a href="/addticket">
+                            <button class="bg-slate-800 text-white px-4 py-2 rounded-md hover:bg-slate-700">+ Create Ticket</button>
+                        </a>
+                        {% endif %}
+                        <form id="statusForm" method="GET" action="/tickets">
+                            <select class="border border-gray-300 rounded-md p-2" name="status" onchange="document.getElementById('statusForm').submit();">
+                                <option value="">All Statuses</option>
+                                <option value="Pending" {% if request.GET.status == 'Pending' %}selected{% endif %}>Pending</option>
+                                <option value="Approved" {% if request.GET.status == 'Approved' %}selected{% endif %}>Approved</option>
+                                <option value="Rejected" {% if request.GET.status == 'Rejected' %}selected{% endif %}>Rejected</option>
+                                <option value="Ordered" {% if request.GET.status == 'Ordered' %}selected{% endif %}>Ordered</option>
+                                <option value="Delivered" {% if request.GET.status == 'Delivered' %}selected{% endif %}>Delivered</option>
+                            </select>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <form method="get" action="/action">
+                    <table class="w-full text-left">
+                        <thead class="bg-gray-50 border-b">
+                            <tr>
+                                <th class="p-4 font-semibold text-gray-600">ID</th>
+                                <th class="p-4 font-semibold text-gray-600">Title</th>
+                                <th class="p-4 font-semibold text-gray-600">Status</th>
+                                <th class="p-4 font-semibold text-gray-600">Approved by</th>
+                                <th class="p-4 font-semibold text-gray-600">Estimated Delivery</th>
+                                <th class="p-4 font-semibold text-gray-600 text-center">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% if tickets %}
+                            {% for i in tickets %}
+                            <tr class="border-b">
+                                <td class="p-4 text-gray-700">{{ i.ticket_id }}</td>
+                                <td class="p-4 text-gray-700">{{ i.title }}</td>
+                                <td class="p-4 text-gray-700">
+                                {% if i.status == "Approved" %}
+                                <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
+                                    <span class="h-2 w-2 rounded-full bg-green-500"></span>
+                                    Approved
+                                </span>
+
+                                {% elif i.status == "Rejected" %}
+                                <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm font-medium bg-red-100 text-red-800">
+                                    <span class="h-2 w-2 rounded-full bg-red-500"></span>
+                                    Rejected
+                                </span>
+
+                                {% elif i.status == "Pending" %}
+                                <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm font-medium bg-yellow-100 text-yellow-800">
+                                    <span class="h-2 w-2 rounded-full bg-yellow-500"></span>
+                                    Pending
+                                </span>
+
+                                {% elif i.status == "Ordered" %}
+                                <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
+                                    <span class="h-2 w-2 rounded-full bg-blue-500"></span>
+                                    Ordered
+                                </span>
+
+                                {% elif i.status == "Delivered" %}
+                                <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm font-medium bg-purple-100 text-purple-800">
+                                    <span class="h-2 w-2 rounded-full bg-purple-500"></span>
+                                    Delivered
+                                </span>
+                                {% endif %}
+                                </td>
+                                <td class="p-4 text-gray-700">{{ i.approver }}</td>
+                                <td class="p-4 text-gray-700">{{ i.estimated_delivery }}</td>
+                                <td class="p-4 text-center">
+                                    <input class="hidden" type="text" name="ticketid" value="{{i.ticket_id}}" >
+                                    <button class="bg-white border border-gray-300 text-gray-700 px-4 py-1.5 rounded-md hover:bg-gray-100" type="submit" name="action" value="view">
+                                        <i class="fas fa-eye mr-1"></i> View
+                                    </button>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                            {% else %}
+                            <tr>
+                                <td colspan="6" class="text-center p-8 text-gray-500">
+                                    No tickets found
+                                </td>
+                            </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                    </form>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

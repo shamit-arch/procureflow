@@ -1,0 +1,236 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create New Ticket - Procure Flow</title>
+    <link rel="icon" href="{% static "IMG/favicon.png" %}"/>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" xintegrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body class="flex h-screen">
+        <aside class="w-64 flex flex-col bg-slate-800 text-white">
+            <div class="px-6 py-4 border-b border-slate-700">
+                <h1 class="text-2xl font-bold">Procure Flow</h1>
+            </div>
+            <nav class="flex-1 mt-6">
+                <a href="/dashboard" class="flex items-center px-6 py-3 text-gray-300 hover:bg-slate-700">
+                    <i class="fas fa-tachometer-alt w-6"></i>
+                    <span class="ml-3">Dashboard</span>
+                </a>
+                <a href="/tickets" class="flex items-center px-6 py-3 text-gray-300 hover:bg-slate-700">
+                    <i class="fas fa-ticket-alt w-6"></i>
+                    <span class="ml-3">All Tickets</span>
+                </a>
+                
+            </nav>
+            <div class="p-4 border-t border-slate-700">
+                 <a href="/setting" class="flex items-center px-4 py-3 text-gray-300 hover:bg-slate-700">
+                    <i class="fas fa-cog w-6"></i>
+                    <span class="ml-3">Settings</span>
+                </a>
+                <a href="/logout" class="flex items-center px-4 py-3 text-white bg-red-500 rounded-lg hover:bg-red-600">
+                    <i class="fas fa-sign-out-alt w-6"></i>
+                    <span class="ml-3">Logout</span>
+                </a>
+            </div>
+        </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 p-8 overflow-y-auto">
+        <div class="flex justify-end mb-8">
+                <div class="text-gray-600">{{ user.name }}</div>
+        </div>
+
+        <div class="flex-1 p-8 overflow--auto">
+            <div class="bg-white p-8 rounded-lg shadow-md">
+                <h1 class="text-2xl font-semibold mb-6">Create New Ticket</h1>
+
+                <form method="post" action="/addticket">
+                  {% csrf_token %}
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="ticketid" class="block text-sm font-medium text-gray-700">Ticket ID</label>
+                        <input name="ticketid" id="ticketid" type="text" value="{{ ticketid }}" readonly class="p-4 mt-1 block w-full bg-gray-100 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                    </div>
+                    <div>
+                        <label for="status" class="block text-sm font-medium text-gray-700">Status</label>
+                        <select name="status" id="status" class="p-4 mt-1 block w-full bg-gray-100 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                            <option value="Pending">Pending</option>
+                        </select>
+                    </div>
+                     <div>
+                        <label for="title" class="block text-sm font-medium text-gray-700">Title*</label>
+                        <input type="text" id="title" name="title" class="p-4 mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" required>
+                    </div>
+                    <div>
+                        <label for="category" class="block text-sm font-medium text-gray-700">Category*</label>
+                        <select id="category" name="category" class="p-4 mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                            <option>Select a category</option>
+                            {% for category in categories %}
+                            <option value="{{ category.id }}">{{ category.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                     <div class="hidden">
+                        <label for="requestor" class="block text-sm font-medium text-gray-700">Requestor</label>
+                        <input name="requestor_id" class="hidden" value="{{ user.id }}">
+                        <input type="text" name="requestor" id="requestor" value="{{ user.name }}" class="p-4 mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                    </div>
+                    <div class="hidden">
+                        <label for="company" class="block text-sm font-medium text-gray-700">Company</label>
+                        <input class="hidden" name="company_id" value="{{ user.company.id }}">
+                        <input type="text" name="company" id="company" value="{{ user.company }}" class="p-4 mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                    </div>
+                    <div class="hidden">
+                        <label for="department" class="block text-sm font-medium text-gray-700">Department</label>
+                        <input type="hidden" name="department_id" value="{{ user.department.id }}">
+                        <input type="text" id="department" value="{{ user.department }}" class="p-4 mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                    </div>
+                     <div class="relative">
+                        <label for="required_by" class="block text-sm font-medium text-gray-700">Required By*</label>
+                        <input type="date" name="required_by" id="required_by" placeholder="mm / dd / yyyy" class="p-4 mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" required>
+                        <div class="absolute inset-y-0 right-0 top-6 pr-3 flex items-center pointer-events-none">
+                             <i class="fas fa-calendar-alt text-gray-400"></i>
+                        </div>
+                    </div>
+                    <div class="md:col-span-2">
+                        <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
+                        <textarea id="description" name="description" rows="4" class="p-4 mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"></textarea>
+                    </div>
+                    <div class="md:col-span-2">
+                        <label for="justification" class="block text-sm font-medium text-gray-700">Business Justification*</label>
+                        <textarea id="justification" name="justification" rows="4" class="p-4 mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" required></textarea>
+                    </div>
+                </div>
+
+                <!-- Items Section -->
+                <div class="mt-8">
+                    <h2 class="text-lg font-semibold mb-4">Items</h2>
+                    <div id="items-container">
+                        <div class="flex items-center space-x-4 mb-4 item-row">
+                            <input type="text" class="font-semibold" value="1" disabled>
+
+                            <input type="text" placeholder="Name*" name="items[0][name]" required class="p-4 w-full border-gray-300 rounded-md shadow-sm sm:text-sm" >
+                            <input type="text" placeholder="Budget*" name="items[0][budget]" required class="p-4 w-full border-gray-300 rounded-md shadow-sm sm:text-sm" >
+                            <input type="text" placeholder="Quantity*" name="items[0][quantity]" required class="p-4 w-full border-gray-300 rounded-md shadow-sm sm:text-sm" >
+                            <select class="p-4 border-gray-300 rounded-md shadow-sm sm:text-sm" name="items[0][unit]" required>
+                                <option value="pcs">pcs</option>
+                                <option value="kg">kg</option>
+                                <option value="liters">liters</option>
+                                <option value="box">box</option>
+                                <option value="set">set</option>
+                            </select>
+                            <button class="p-4 bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 remove-item">Delete</button>
+                        </div>
+                    </div>
+                    <button id="add-item" class="bg-gray-800 text-white px-4 py-2 rounded-md hover:bg-gray-900"><i class="fas fa-plus mr-2"></i>Add Another Item</button>
+                </div>
+
+                 <!-- Services Section -->
+                <div class="mt-8">
+                    <h2 class="text-lg font-semibold mb-4">Services</h2>
+                    <div id="services-container">
+                        <div class="flex items-center space-x-4 mb-4 service-row">
+                            <input type="text" class="form-semibold" value="1" disabled>
+                            <input type="text" name="services[0][name]" placeholder="Name*" class="p-4 w-full border-gray-300 rounded-md shadow-sm sm:text-sm" required>
+                            <input type="text" name="services[0][cost]" placeholder="Cost*" class="p-4 w-full border-gray-300 rounded-md shadow-sm sm:text-sm" required>
+                            <input type="text" name="services[0][duration]" placeholder="Duration*" class="p-4 w-full border-gray-300 rounded-md shadow-sm sm:text-sm" required>
+                            <select class="p-4 border-gray-300 rounded-md shadow-sm sm:text-sm" name="services[0][timeunit]" required>
+                              <option value="month">month</option>
+                              <option value="year">year</option>
+                              <option value="days">days</option>
+                              <option value="hours">hours</option>
+                            </select>
+                            <button class="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 remove-service">Delete</button>
+                        </div>
+                    </div>
+                    <button id="add-service" class="bg-gray-800 text-white px-4 py-2 rounded-md hover:bg-gray-900"><i class="fas fa-plus mr-2"></i>Add Another Service</button>
+                </div>
+
+                <div class="flex justify-end mt-8 space-x-4">
+                    <a href="/dashboard"><button onlclick="history.back()" class="px-6 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50">Cancel</button></a>
+                    <button type="submit" class="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">Submit Ticket</button>
+                </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const itemsContainer = document.getElementById('items-container');
+    const addItemButton = document.getElementById('add-item');
+    let itemIndex = 1;
+
+    const servicesContainer = document.getElementById('services-container');
+    const addServiceButton = document.getElementById('add-service');
+    let serviceIndex = 1;
+
+    // Add Item Row
+    addItemButton.addEventListener('click', function(e) {
+        e.preventDefault();
+        const newRow = document.createElement('div');
+        newRow.classList.add('flex', 'items-center', 'space-x-4', 'mb-4', 'item-row');
+        newRow.innerHTML = `
+            <input type="text" class="form-semibold" value="${itemIndex + 1}" disabled>
+            <input type="text" placeholder="Name*" name="items[${itemIndex}][name]" required class="p-4 w-full border-gray-300 rounded-md shadow-sm sm:text-sm">
+            <input type="text" placeholder="Budget*" name="items[${itemIndex}][budget]" required class="p-4 w-full border-gray-300 rounded-md shadow-sm sm:text-sm">
+            <input type="text" placeholder="Quantity*" name="items[${itemIndex}][quantity]" required class="p-4 w-full border-gray-300 rounded-md shadow-sm sm:text-sm">
+            <select name="items[${itemIndex}][unit]" required class="p-4 border-gray-300 rounded-md shadow-sm sm:text-sm">
+                <option value="pcs">pcs</option>
+                <option value="kg">kg</option>
+                <option value="liters">liters</option>
+                <option value="box">box</option>
+                <option value="set">set</option>
+            </select>
+            <button class="p-4 bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 remove-item">Delete</button>
+        `;
+        itemsContainer.appendChild(newRow);
+        itemIndex++;
+    });
+
+    // Remove Item Row
+    itemsContainer.addEventListener('click', function(e) {
+        if (e.target.classList.contains('remove-item')) {
+            e.preventDefault();
+            e.target.closest('.item-row').remove();
+        }
+    });
+
+    // Add Service Row
+    addServiceButton.addEventListener('click', function(e) {
+        e.preventDefault();
+        const newRow = document.createElement('div');
+        newRow.classList.add('flex', 'items-center', 'space-x-4', 'mb-4', 'service-row');
+        newRow.innerHTML = `
+            <input type="text" class="form-semibold" value="${serviceIndex + 1}" disabled>
+            <input type="text" name="services[${serviceIndex}][name]" placeholder="Name*" required class="p-4 w-full border-gray-300 rounded-md shadow-sm sm:text-sm">
+            <input type="text" name="services[${serviceIndex}][cost]" placeholder="Cost*" required class="p-4 w-full border-gray-300 rounded-md shadow-sm sm:text-sm">
+            <input type="text" name="services[${serviceIndex}][duration]" placeholder="Duration*" required class="p-4 w-full border-gray-300 rounded-md shadow-sm sm:text-sm">
+            <select name="services[${serviceIndex}][timeunit]" required class="p-4 border-gray-300 rounded-md shadow-sm sm:text-sm">
+                <option value="month">month</option>
+                <option value="year">year</option>
+                <option value="days">days</option>
+                <option value="hours">hours</option>
+            </select>
+            <button class="p-4 bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 remove-service">Delete</button>
+        `;
+        servicesContainer.appendChild(newRow);
+        serviceIndex++;
+    });
+
+    // Remove Service Row
+    servicesContainer.addEventListener('click', function(e) {
+        if (e.target.classList.contains('remove-service')) {
+            e.preventDefault();
+            e.target.closest('.service-row').remove();
+        }
+    });
+});
+</script>
+
+</body>
+</html>
