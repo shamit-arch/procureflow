@@ -52,10 +52,10 @@ It supports multiple companies and departments, role-based access, ticketed requ
 
 ## Quick demo / screenshots
 Add screenshots and a short demo video here. Example placeholders:
-- `docs/screenshots/employee_raise_ticket.png`  
-- `docs/screenshots/hod_approval.png`  
-- `docs/screenshots/procurement_rfq.png`  
-- `docs/screenshots/vendor_quote_form.png`
+- `screenshots/employee.png`  
+- `screenshots/hod.png`  
+- `screenshots/procurement.png`  
+- `screenshots/form.png`
 
 ---
 
