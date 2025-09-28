@@ -14,7 +14,7 @@ It supports multiple companies and departments, role-based access, ticketed requ
 - [Quick demo / screenshots](#quick-demo--screenshots)  
 - [Getting started (local)](#getting-started-local)  
 - [Deployment notes](#deployment-notes)  
-- [Models & workflow (summary)](# models-and-workflow)
+- [Models & workflow (summary)](#models-and-workflow)
 - [Future improvements](#future-improvements)  
 - [Contributing](#contributing)  
 - [License](#license)
