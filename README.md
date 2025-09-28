@@ -51,7 +51,6 @@ It supports multiple companies and departments, role-based access, ticketed requ
 ---
 
 ## Quick demo / screenshots
-Add screenshots and a short demo video here. Example placeholders:
 - ![employee dashboard](screenshots/employee.png)  
 - ![hod dashboard](screenshots/hod.png)  
 - ![procurement dashboard](screenshots/procurement.png)  
@@ -60,7 +59,6 @@ Add screenshots and a short demo video here. Example placeholders:
 ---
 
 ## Getting started (local)
-> TL;DR — do not commit `.env`, do not commit secret keys.
 
 1. Clone:
 ```bash
