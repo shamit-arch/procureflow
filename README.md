@@ -52,10 +52,10 @@ It supports multiple companies and departments, role-based access, ticketed requ
 
 ## Quick demo / screenshots
 Add screenshots and a short demo video here. Example placeholders:
-- `screenshots/employee.png`  
-- `screenshots/hod.png`  
-- `screenshots/procurement.png`  
-- `screenshots/form.png`
+- ![employee dashboard](screenshots/employee.png)  
+- ![hod dashboard](screenshots/hod.png)  
+- ![procurement dashboard](screenshots/procurement.png)  
+- ![vendor form](screenshots/form.png)
 
 ---
 
