@@ -52,7 +52,7 @@
                             <input type="text" name="items[{{ forloop.counter0 }}][unit]" readonly value="{{ i.unit }}" class="bg-gray-100 p-4 w-full border-gray-300 rounded-md shadow-sm sm:text-sm">
                             <input type="number" placeholder="quote per {{ i.unit }}" name="items[{{ forloop.counter0 }}][quotePrice]" class="border-4 border-blue-300 p-4 w-full rounded-md shadow-sm sm:text-sm quote-price" required>
                             <input type="number" placeholder="total" name="items[{{ forloop.counter0 }}][total]" class="bg-gray-100  p-4 w-full border-gray-300 rounded-md shadow-sm sm:text-sm total-price" readonly>
-                            
+                            <input type="text" placeholder="remark" name="items[{{ forloop.counter0 }}][remarks]" class="border-4  p-4 w-full rounded-md shadow-sm sm:text-sm quote-price" maxlength="256">
                         </div>
                         {% endfor %}
                         {% else %}
@@ -78,6 +78,9 @@
                             <input type="text" name="services[{{ forloop.counter0 }}][timeunit]" readonly value="{{ i.timeunit }}" class="bg-gray-100 p-4 w-full border-gray-300 rounded-md shadow-sm sm:text-sm">
                             <input type="number" placeholder="quote per {{ i.timeunit }}" class="p-4 w-full border-4 border-blue-300 rounded-md shadow-sm sm:text-sm quote-price" name="services[{{ forloop.counter0 }}][quotePrice]" required>
                             <input type="number" placeholder="total" class="bg-gray-100 p-4 w-full border-gray-300 rounded-md shadow-sm sm:text-sm total" name="services[{{ forloop.counter0 }}][total]" readonly>
+                            <input type="text" placeholder="remark" name="services[{{ forloop.counter0 }}][remarks]" class="border-4  p-4 w-full rounded-md shadow-sm sm:text-sm quote-price" 
+                            maxlength="256">
+
                         </div>
                         {% endfor %}
                         {% else %}

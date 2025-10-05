@@ -496,14 +496,15 @@ def addQuote(request):
 
             quoted_unit_price = request.POST.get(f"items[{index}][quotePrice]")
             quoted_total_price = request.POST.get(f"items[{index}][total]")
-
+            remarks = request.POST.get(f"items[{index}][remarks]")
             ticket_item = TicketItem.objects.get(id=item_id)
 
             VendorItemQuote.objects.create(
                 quote_id=vendor_quote,
                 ticket_item=ticket_item,
                 quoted_unit_price=quoted_unit_price,
-                quoted_total_price=quoted_total_price
+                quoted_total_price=quoted_total_price,
+                remarks=remarks
             )
 
             index += 1
@@ -517,14 +518,15 @@ def addQuote(request):
 
             quoted_unit_price = request.POST.get(f"services[{index}][quotePrice]")
             quoted_total_price = request.POST.get(f"services[{index}][total]")
-
+            remarks = request.POST.get(f"services[{index}][remarks]")
             ticket_service = TicketService.objects.get(id=service_id)
 
             VendorServiceQuote.objects.create(
                 quote_id=vendor_quote,
                 ticket_service=ticket_service,
                 quoted_unit_price=quoted_unit_price,
-                quoted_total_price=quoted_total_price
+                quoted_total_price=quoted_total_price,
+                remarks=remarks
             )
 
             index += 1

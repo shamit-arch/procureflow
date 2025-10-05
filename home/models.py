@@ -149,9 +149,11 @@ class VendorItemQuote(models.Model):
     ticket_item = models.ForeignKey(TicketItem, on_delete=models.CASCADE)
     quoted_unit_price = models.DecimalField(max_digits=12, decimal_places=2)
     quoted_total_price = models.DecimalField(max_digits=12, decimal_places=2)
+    remarks = models.CharField(max_length=256)
 
 class VendorServiceQuote(models.Model):
     quote_id = models.ForeignKey(VendorQuote, on_delete=models.CASCADE, related_name='service_quotes')
     ticket_service = models.ForeignKey(TicketService, on_delete=models.CASCADE)
     quoted_unit_price = models.DecimalField(max_digits=12, decimal_places=2)
     quoted_total_price = models.DecimalField(max_digits=12, decimal_places=2)
+    remarks = models.CharField(max_length=256)
